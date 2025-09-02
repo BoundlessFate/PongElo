@@ -35,7 +35,7 @@ function App() {
             selectedNameTwo
         };
 
-        fetch('http://192.168.1.101:3000/data', {
+        fetch('https://192.168.1.101:3000/data', {
             method: 'POST', // Use POST to send data
             headers: {
                 'Content-Type': 'application/json', // Tell server we're sending JSON
@@ -48,7 +48,7 @@ function App() {
     };
 
     useEffect(() => {
-        fetch("http://192.168.1.101:3000/data")
+        fetch("https://192.168.1.101:3000/data")
             .then((res) => res.json())
             .then((json: EloData[]) => setData(json))
     }, []);
