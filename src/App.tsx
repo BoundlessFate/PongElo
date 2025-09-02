@@ -16,16 +16,16 @@ type EloData = {
     gamesWonBySink: number;
     professionalsPlayed: number;
     professionalsWon: number;
-
 }
 
 function App() {
-    const [activeTab, setActiveTab] = useState<'home' | 'submit' | 'leaderboards'>('home')
+    const [activeTab, setActiveTab] = useState<'home' | 'submit' | 'newUser' | 'leaderboards'>('home')
     const [data, setData] = useState<EloData[]>([]);
     const [selectedNameOne, setSelectedNameOne] = useState<string>();
     const [scoreOne, setScoreOne] = useState<number>(5);
     const [selectedNameTwo, setSelectedNameTwo] = useState<string>();
     const [scoreTwo, setScoreTwo] = useState<number>(5);
+    const [newUser, setNewUser] = useState<string>();
 
     const handleSubmit = () => {
         const payload = {
@@ -35,7 +35,7 @@ function App() {
             selectedNameTwo
         };
 
-        fetch('https://192.168.1.101:3000/data', {
+        fetch("localhost:3000/data", {
             method: 'POST', // Use POST to send data
             headers: {
                 'Content-Type': 'application/json', // Tell server we're sending JSON
@@ -47,8 +47,21 @@ function App() {
         }, 1000);
     };
 
+    const handleSubmitNewUser = () => {
+        fetch("localhost:3000/newUser", {
+            method: 'POST', // Use POST to send data
+            headers: {
+                'Content-Type': 'application/json', // Tell server we're sending JSON
+            },
+            body: JSON.stringify(newUser), // Convert JS object to JSON string
+        });
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    };
+
     useEffect(() => {
-        fetch("https://192.168.1.101:3000/data")
+        fetch("localhost:3000/data")
             .then((res) => res.json())
             .then((json: EloData[]) => setData(json))
     }, []);
@@ -135,6 +148,34 @@ function App() {
                         <button onClick={handleSubmit}>Submit</button>
                     </>
                 )
+            case 'newUser':
+                return (
+                    <>
+                        <p>Add New User</p>
+                        <input
+                            type="text"
+                            value={newUser}
+                            onChange={(e) => setNewUser(e.target.value)}
+                        />
+                        <p />
+                        <button onClick={handleSubmitNewUser}>Submit</button>
+                        <hr />
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Current Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map((item) => (
+                                    <tr key={item._id}>
+                                        <td>{item.name}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </>
+                )
             case 'leaderboards':
                 return (
                     <>
@@ -195,6 +236,7 @@ function App() {
     const tabs = [
         { id: 'home', label: 'Home' },
         { id: 'submit', label: 'Submit' },
+        { id: 'newUser', label: 'New User' },
         { id: 'leaderboards', label: 'Leaderboards' },
     ]
 
