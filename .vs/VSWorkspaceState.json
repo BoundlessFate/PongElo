@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
     "\\src\\assets"
   ],
-  "SelectedNode": "\\src\\assets\\bronze.png",
+  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }
